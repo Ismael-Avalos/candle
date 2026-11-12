@@ -1,62 +1,25 @@
-import { useState } from 'react'
-import { Formulario } from './components/Formulario'
-import { Llama, Mas } from './components/Icono'
-import { Lista } from './components/Lista'
-import { useCumpleanos } from './hooks/useCumpleanos'
-import { useHoy } from './hooks/useHoy'
-import type { DatosCumpleanos } from './lib/tipos'
-
-/** Qué muestra el formulario: nada, uno nuevo o el cumpleaños con ese identificador. */
-type Edicion = null | 'nuevo' | { id: string }
+import { Acceso } from './components/Acceso'
+import { Principal } from './components/Principal'
+import { useSesion } from './hooks/useSesion'
+import { supabaseConfigurado } from './lib/supabase'
 
 export default function App() {
-  const { lista, agregar, actualizar, eliminar } = useCumpleanos()
-  const [edicion, setEdicion] = useState<Edicion>(null)
-  const hoy = useHoy()
+  const sesion = useSesion()
 
-  const enEdicion = edicion && edicion !== 'nuevo' ? lista.find((c) => c.id === edicion.id) : undefined
-
-  const guardar = (datos: DatosCumpleanos) => {
-    if (enEdicion) actualizar(enEdicion.id, datos)
-    else agregar(datos)
-    setEdicion(null)
+  if (!supabaseConfigurado) {
+    return (
+      <p className="mx-auto max-w-sm px-6 py-16 text-tenue">
+        Falta configurar Supabase: copia <code>.env.example</code> como <code>.env.local</code>, rellena los dos
+        valores y reinicia el servidor.
+      </p>
+    )
   }
 
-  return (
-    <div className="mx-auto min-h-dvh max-w-md px-5 pt-[max(1.5rem,env(safe-area-inset-top))] pb-32">
-      <header className="flex items-center gap-2.5">
-        <Llama className="size-7 text-llama" />
-        <h1 className="font-titulo text-3xl font-semibold tracking-tight">Candle</h1>
-      </header>
+  // Mientras se comprueba la sesión guardada no se pinta nada, para no enseñar
+  // la pantalla de acceso durante un instante a quien ya está dentro.
+  if (sesion === undefined) return null
+  if (sesion === null) return <Acceso />
 
-      <main>
-        <Lista lista={lista} hoy={hoy} onAbrir={(id) => setEdicion({ id })} />
-      </main>
-
-      <div className="pointer-events-none fixed inset-x-0 bottom-0 flex justify-center bg-linear-to-t from-fondo from-55% to-transparent px-5 pt-10 pb-[max(1.25rem,env(safe-area-inset-bottom))]">
-        <button
-          type="button"
-          onClick={() => setEdicion('nuevo')}
-          className="pointer-events-auto flex items-center gap-2 rounded-full bg-llama px-6 py-3.5 font-semibold text-tinta shadow-lg shadow-black/40 hover:bg-brasa"
-        >
-          <Mas className="size-5" />
-          Añadir cumpleaños
-        </button>
-      </div>
-
-      {edicion && (
-        <Formulario
-          key={enEdicion?.id ?? 'nuevo'}
-          inicial={enEdicion}
-          hoy={hoy}
-          onGuardar={guardar}
-          onEliminar={() => {
-            if (enEdicion) eliminar(enEdicion.id)
-            setEdicion(null)
-          }}
-          onCerrar={() => setEdicion(null)}
-        />
-      )}
-    </div>
-  )
+  // La clave hace que, si cambia la cuenta, la lista empiece de cero con los datos de la nueva.
+  return <Principal key={sesion.user.id} usuarioId={sesion.user.id} />
 }
