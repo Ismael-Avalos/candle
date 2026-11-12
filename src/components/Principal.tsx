@@ -1,8 +1,10 @@
 import { useState } from 'react'
 import { useCumpleanos } from '../hooks/useCumpleanos'
 import { useHoy } from '../hooks/useHoy'
+import { desactivarAvisos } from '../lib/avisos'
 import { supabase } from '../lib/supabase'
 import type { DatosCumpleanos } from '../lib/tipos'
+import { EstadoAvisos } from './EstadoAvisos'
 import { Formulario } from './Formulario'
 import { Llama, Mas } from './Icono'
 import { Lista } from './Lista'
@@ -34,12 +36,14 @@ export function Principal({ usuarioId }: Props) {
         <h1 className="font-titulo text-3xl font-semibold tracking-tight">Candle</h1>
         <button
           type="button"
-          onClick={() => void supabase.auth.signOut()}
+          onClick={() => void desactivarAvisos().then(() => supabase.auth.signOut())}
           className="ml-auto px-2 py-2 text-sm font-medium text-tenue hover:text-texto"
         >
           Salir
         </button>
       </header>
+
+      <EstadoAvisos />
 
       {error && (
         <p role="alert" className="mt-4 rounded-xl border border-peligro/40 bg-peligro/10 px-3.5 py-3 text-sm text-peligro">

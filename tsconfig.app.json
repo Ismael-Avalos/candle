@@ -22,5 +22,5 @@
     "erasableSyntaxOnly": true,
     "noFallthroughCasesInSwitch": true
   },
-  "include": ["src"]
+  "include": ["src", "supabase/functions/enviar-avisos/pendientes.ts", "supabase/functions/enviar-avisos/pendientes.test.ts"]
 }
