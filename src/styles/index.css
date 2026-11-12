@@ -1,0 +1,40 @@
+@import 'tailwindcss';
+@import '@fontsource-variable/fraunces/index.css';
+@import '@fontsource-variable/figtree/index.css';
+
+/* Dirección «Medianoche»: azul noche y la llama como único punto de luz. */
+@theme {
+  --color-fondo: #0b1020;
+  --color-superficie: #141b33;
+  --color-borde: #263050;
+  --color-texto: #f4efe4;
+  --color-tenue: #9ba4c2;
+  --color-llama: #ffb347;
+  --color-brasa: #ff8a1f;
+  --color-tinta: #1b1203;
+  --color-peligro: #ff7a6b;
+
+  --font-titulo: 'Fraunces Variable', Georgia, serif;
+  --font-texto: 'Figtree Variable', system-ui, sans-serif;
+}
+
+html {
+  color-scheme: dark;
+  background: var(--color-fondo);
+}
+
+body {
+  min-height: 100dvh;
+  font-family: var(--font-texto);
+  color: var(--color-texto);
+  -webkit-tap-highlight-color: transparent;
+}
+
+dialog::backdrop {
+  background: rgb(4 6 14 / 0.72);
+}
+
+:focus-visible {
+  outline: 2px solid var(--color-llama);
+  outline-offset: 2px;
+}
