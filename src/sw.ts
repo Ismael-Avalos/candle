@@ -29,7 +29,6 @@ self.addEventListener('push', (evento) => {
       // Dos avisos con la misma etiqueta no se apilan: el segundo sustituye al primero.
       tag: carga.etiqueta,
       icon: '/pwa-192x192.png',
-      badge: '/pwa-64x64.png',
     }),
   )
 })

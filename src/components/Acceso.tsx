@@ -2,6 +2,7 @@ import { useState } from 'react'
 import type { FormEvent } from 'react'
 import { errorDeEnlace, supabase } from '../lib/supabase'
 import { Llama } from './Icono'
+import { Instalar } from './Instalar'
 
 const campo = 'w-full rounded-xl border border-borde bg-superficie px-3.5 py-3 text-texto placeholder:text-tenue/60'
 const boton = 'w-full rounded-full bg-llama px-6 py-3.5 font-semibold text-tinta hover:bg-brasa disabled:opacity-60'
@@ -113,6 +114,8 @@ export function Acceso() {
           {error}
         </p>
       )}
+
+      <Instalar />
     </main>
   )
 }

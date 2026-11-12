@@ -7,6 +7,7 @@ import type { DatosCumpleanos } from '../lib/tipos'
 import { EstadoAvisos } from './EstadoAvisos'
 import { Formulario } from './Formulario'
 import { Llama, Mas } from './Icono'
+import { Instalar } from './Instalar'
 import { Lista } from './Lista'
 
 /** Qué muestra el formulario: nada, uno nuevo o el cumpleaños con ese identificador. */
@@ -44,6 +45,7 @@ export function Principal({ usuarioId }: Props) {
       </header>
 
       <EstadoAvisos />
+      <Instalar />
 
       {error && (
         <p role="alert" className="mt-4 rounded-xl border border-peligro/40 bg-peligro/10 px-3.5 py-3 text-sm text-peligro">
